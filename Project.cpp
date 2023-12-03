@@ -51,12 +51,14 @@ void Initialize(void)
 
 void GetInput(void)
 {
-   
+   myGM->getInput();
 }
 
 void RunLogic(void)
 {
-    
+    myPlayer->updatePlayerDir();
+    myPlayer->movePlayer();
+    myGM->clearInput();
 }
 
 void DrawScreen(void)
