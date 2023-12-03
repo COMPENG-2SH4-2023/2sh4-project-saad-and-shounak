@@ -7,7 +7,17 @@ Player::Player(GameMechs* thisGMRef)
     myDir = STOP;
 
     // more actions to be included
-    playerPos.setObjPos(30, 7, '*')
+    objPos tempPos;
+    tempPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,
+                      mainGameMechsRef->getBoardSizeY()/2,
+                      '*');
+    playerPosList = new objPosArrayList();
+    playerPosList->insertHead(tempPos);
+
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
 
 }
 
@@ -15,13 +25,14 @@ Player::Player(GameMechs* thisGMRef)
 Player::~Player()
 {
     // delete any heap members here
+    delete playerPosList;
 }
 
-void Player::getplayerPos(objPos &returnPos)
+objPosArrayList* Player::getPlayerPos()
 {
     // return the reference to the playerPos arrray list
     
-    returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    return playerPosList;
     
 
 }
@@ -34,19 +45,19 @@ void Player::updatePlayerDir()
     switch(input)
     {
         case 'w':
-            if(myDir == LEFT || myDir == RIGHT || myDir == DOWN)
+            if(myDir != DOWN)
                 myDir = UP;
             break;
         case 'a':
-            if(myDir == UP || myDir == DOWN || myDir == RIGHT)
+            if(myDir != RIGHT)
                 myDir = LEFT;
             break;
         case 's':
-            if(myDir == LEFT || myDir == RIGHT || myDir == UP)
+            if(myDir !=UP )
                 myDir = DOWN;
             break;
         case 'd':
-            if(myDir == UP || myDir == DOWN || myDir == LEFT)
+            if(myDir != RIGHT)
                 myDir = RIGHT;
             break;
 
@@ -59,26 +70,44 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
-
+    objPos currHead;
+    playerPosList->getHeadElement(currHead);
     int boardSizeX = mainGameMechsRef->getBoardSizeX();
     int boardSizeY = mainGameMechsRef->getBoardSizeY();
 
     switch(myDir)
     {
         case UP:
-            playerPos.y = (playerPos.y - 1 + boardSizeY) % boardSizeY;
+            currHead.y--;
+            if(currHead.y<=0){
+                currHead.y = boardSizeY-2;
+            }
             break;
         case DOWN:
-            playerPos.y = (playerPos.y + 1) % boardSizeY;
+            currHead.y++;
+            if(currHead.y>boardSizeY-1){
+                currHead.y = 1;
+            }
             break;
         case LEFT:
-            playerPos.x = (playerPos.x - 1 + boardSizeX) % boardSizeX;
+            currHead.x--;
+            if(currHead.x <=0){
+                currHead.x = boardSizeX-2;
+            }
             break;
         case RIGHT:
-            playerPos.x = (playerPos.x + 1) % boardSizeX;
+            currHead.x++;
+            if(currHead.x >= boardSizeX-1){
+                currHead.x = 1;
+            }
             break;
+
         case STOP:
+        default:
             break;
     }
+
+    playerPosList->insertHead(currHead);
+    playerPosList->removeTail();
 
 }
