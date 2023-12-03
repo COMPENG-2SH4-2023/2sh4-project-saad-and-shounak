@@ -3,6 +3,7 @@
 #include "objPos.h"
 #include "GameMechs.h"
 #include "Player.h"
+#include "objPosArrayList.h"
 using namespace std;
 
 #define DELAY_CONST 100000
@@ -64,9 +65,33 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     MacUILib_clearScreen();    
+
+    bool drawn;
+    objPosArrayList* playerBody = myPlayer->getPlayerPos;
+    objPos tempBody;
+    objPos tempFoodPos;
+    myGM->getFoodPos(tempFoodPos);
+
+
+
     int i,j;
     for(i=0; i<myGM->getBoardSizeY();i++){
         for(j=0; j< myGM->getBoardSizeX();j++){
+
+            drawn = false;
+
+            for(int k=0; k< playerBody->getSize(); k++ ){
+
+                playerBody->getElement(tempBody, k);
+                if(tempBody.x == j && tempBody.y == i){
+                    MacUILib_printf("%c", tempBody.symbol);
+                    drawn = true;
+                    break;
+                }
+            }
+
+            if(drawn) continue; // continues if player body was drawn
+
             if(i==0 || i == myGM->getBoardSizeY() -1 || j==0|| j == myGM->getBoardSizeX() -1){
                 MacUILib_printf("#");
             }
