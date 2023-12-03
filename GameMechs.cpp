@@ -90,7 +90,19 @@ void GameMechs::incrementScore()
     score++;
 }
 
+void GameMechs::generateFood(objPos blockOff) {
+    srand(time(NULL)); 
+    do {
+        foodPos.x = rand() % boardSizeX;
+        foodPos.y = rand() % boardSizeY;
+    } while ((foodPos.x == blockOff.x && foodPos.y == blockOff.y) || foodPos.x == 0 || foodPos.y == 0 || foodPos.x == boardSizeX - 1 || foodPos.y == boardSizeY - 1);
 
+    foodPos.symbol = 'O'; 
+}
+
+void GameMechs::getFoodPos(objPos &returnPos) {
+    returnPos = foodPos;
+}
 
 
 

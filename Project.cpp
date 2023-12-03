@@ -47,6 +47,10 @@ void Initialize(void)
     myPlayer = new Player (myGM);
 
 
+    //this gets player pos and generates food pos
+    objPos playerPosition;
+    myPlayer->getPlayerPos(playerPosition);
+    myGM->generateFood(playerPosition);
     
 }
 
@@ -91,6 +95,11 @@ void DrawScreen(void)
             }
 
             if(drawn) continue; // continues if player body was drawn
+
+            if(i == tempFoodPos.y && j == tempFoodPos.x) {
+                MacUILib_printf("%c", tempFoodPos.symbol);
+                continue; 
+            }
 
             if(i==0 || i == myGM->getBoardSizeY() -1 || j==0|| j == myGM->getBoardSizeX() -1){
                 MacUILib_printf("#");
