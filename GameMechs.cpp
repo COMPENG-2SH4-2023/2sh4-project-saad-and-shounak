@@ -54,6 +54,9 @@ char GameMechs::getInput()
     if(MacUILib_hasChar()){
         input = MacUILib_getChar();
     }
+    if(input == 27){
+        GameMechs::setExitTrue();
+    }
     return input;
 }
 
