@@ -15,6 +15,7 @@ void Initialize(void);
 void GetInput(void);
 void RunLogic(void);
 void DrawScreen(void);
+void DrawGameOverScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
@@ -62,6 +63,13 @@ void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+
+    if(myGM->getLoseFlagStatus()) {
+        DrawGameOverScreen(); 
+        MacUILib_Delay(5000000); 
+        myGM->setExitTrue(); 
+    }
+
     myGM->clearInput();
 }
 
@@ -115,6 +123,20 @@ void DrawScreen(void)
         
     }
 }
+
+
+void DrawGameOverScreen(void)
+{
+    MacUILib_clearScreen();
+    MacUILib_printf("Game Over!\n");
+    MacUILib_printf("Final Score: %d\n", myGM->getScore());
+    MacUILib_printf("Press any key to exit...\n");
+
+    while(!MacUILib_hasChar()) {
+        MacUILib_Delay(100000); 
+    }
+}
+
 
 void LoopDelay(void)
 {
