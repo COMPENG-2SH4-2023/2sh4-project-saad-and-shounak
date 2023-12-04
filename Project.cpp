@@ -56,7 +56,10 @@ void Initialize(void)
 
 void GetInput(void)
 {
-   myGM->getInput();
+   char input = myGM->getInput();
+   if(input == 27) { 
+       myGM->setLoseFlag(); 
+   }
 }
 
 void RunLogic(void)
