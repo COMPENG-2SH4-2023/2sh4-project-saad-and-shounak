@@ -49,7 +49,7 @@ void Initialize(void)
 
     //this gets player pos and generates food pos
     objPos playerPosition{-1,-1,'o'};
-    myGM->generateFood(playerPosition);
+    myGM->generateFood(*myPlayer->getPlayerPos());
     
 }
 

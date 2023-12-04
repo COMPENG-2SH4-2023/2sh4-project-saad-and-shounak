@@ -107,7 +107,16 @@ void Player::movePlayer()
             break;
     }
 
+
+    objPos foodPos;
+    mainGameMechsRef->getFoodPos(foodPos);
+    if (newHead.x == foodPos.x && newHead.y == foodPos.y) {
+        mainGameMechsRef->incrementScore(); // Increment the score
+        mainGameMechsRef->generateFood(playerPosList->getAllPos()); // Generate new food
+    } else {
+        playerPosList->removeTail(); 
+    }
+    
     playerPosList->insertHead(currHead);
-    playerPosList->removeTail();
 
 }

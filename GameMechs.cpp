@@ -90,14 +90,25 @@ void GameMechs::incrementScore()
     score++;
 }
 
-void GameMechs::generateFood(objPos blockOff) {
+void GameMechs::generateFood(objPosArrayList playerBody) {
     srand(time(NULL)); 
+    bool validPosition;
     do {
-        foodPos.x = rand() % boardSizeX;
-        foodPos.y = rand() % boardSizeY;
-    } while ((foodPos.x == blockOff.x && foodPos.y == blockOff.y) || foodPos.x == 0 || foodPos.y == 0 || foodPos.x == boardSizeX - 1 || foodPos.y == boardSizeY - 1);
+        validPosition = true;
+        foodPos.x = rand() % (boardSizeX - 2) + 1; 
+        foodPos.y = rand() % (boardSizeY - 2) + 1; 
+        foodPos.symbol = 'O'; 
 
-    foodPos.symbol = 'O'; 
+        // Check if food pos overlaps with snake's body
+        for (int i = 0; i < playerBody.getSize(); ++i) {
+            objPos bodyPart;
+            playerBody.getElement(bodyPart, i);
+            if (bodyPart.x == foodPos.x && bodyPart.y == foodPos.y) {
+                validPosition = false; // if overlap, break and try again
+                break;
+            }
+        }
+    } while (!validPosition);
 }
 
 void GameMechs::getFoodPos(objPos &returnPos) {
