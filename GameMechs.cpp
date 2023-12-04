@@ -47,6 +47,7 @@ bool GameMechs::getLoseFlagStatus()
 void GameMechs::setLoseFlag()
 {
     loseFlag = true;
+    GameMechs::setExitTrue();
 }
 
 char GameMechs::getInput()
