@@ -85,7 +85,7 @@ void Player::movePlayer()
             break;
         case DOWN:
             currHead.y++;
-            if(currHead.y>boardSizeY-1){
+            if(currHead.y>boardSizeY-2){
                 currHead.y = 1;
             }
             break;
@@ -108,15 +108,17 @@ void Player::movePlayer()
     }
 
 
+
+    
+    playerPosList->insertHead(currHead);
     objPos foodPos;
     mainGameMechsRef->getFoodPos(foodPos);
-    if (newHead.x == foodPos.x && newHead.y == foodPos.y) {
+    if (currHead.x == foodPos.x && currHead.y == foodPos.y) {
         mainGameMechsRef->incrementScore(); // Increment the score
-        mainGameMechsRef->generateFood(playerPosList->getAllPos()); // Generate new food
+        mainGameMechsRef->generateFood(*playerPosList); // Generate new food
     } else {
         playerPosList->removeTail(); 
     }
-    
-    playerPosList->insertHead(currHead);
+        
 
 }
